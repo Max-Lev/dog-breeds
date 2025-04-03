@@ -1,1 +1,6 @@
-<p>search works!</p>
+<section class="container">
+    <form [formGroup]="searchForm" class="formContainer">
+        <app-drop-down formControlName="breedName"></app-drop-down>
+        <app-size-control formControlName="sizeCntrl"></app-size-control>
+    </form>
+</section>

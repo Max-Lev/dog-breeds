@@ -8,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './adoption.component.scss'
 })
 export class AdoptionComponent {
-
+  constructor(){
+    console.log('AdoptionComponent')
+  }
 }

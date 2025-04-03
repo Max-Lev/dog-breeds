@@ -1,11 +1,9 @@
 <nav mat-tab-nav-bar [backgroundColor]="background" [tabPanel]="tabPanel">
 
     @for (link of links; track link) {
-    <a mat-tab-link 
-    routerLink="{{link.toLocaleLowerCase()}}" 
-    (click)="activeLink= link" 
-    [active]="activeLink == link">{{link}} </a>
+    <a mat-tab-link routerLink="{{link.toLocaleLowerCase()}}" (click)="activeLink= link"
+        [active]="activeLink == link">{{link}} </a>
     }
-  </nav>
-  
-  <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+</nav>
+
+<mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
