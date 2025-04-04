@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { IBreed, IBreedsResponse } from '../models/breeds.model';
+import { IBreed, IBreedsResponse, IByBreedResponse } from '../models/breeds.model';
 import { filter, map, shareReplay, tap } from 'rxjs/operators';
 import { Observable, ReplaySubject } from 'rxjs';
 
@@ -14,14 +14,14 @@ export class BreedsService {
   private http = inject(HttpClient);
 
   private breedsCache = new ReplaySubject<IBreed[]>(1);
-  
-  isLoaded:boolean = false;
+
+  isLoaded: boolean = false;
 
   constructor() {
 
   }
 
-  getAllBreeds = (): Observable<IBreed[]> => {
+  getAllBreeds$ = (): Observable<IBreed[]> => {
     if (!this.isLoaded) {
       this.http.get<IBreedsResponse>(environment.allBreeds).pipe(
         map((response: IBreedsResponse) => this.findSubBreeds(response))
@@ -40,6 +40,11 @@ export class BreedsService {
         subBreeds: subBreeds
       }));
     return breedsWithSubBreeds;
+  }
+
+  getByBreed(name: string): Observable<IByBreedResponse> {
+    const url = `${environment.byBreed}/${name}/images`;
+    return this.http.get<{ message: string[], success: string }>(url);
   }
 
 

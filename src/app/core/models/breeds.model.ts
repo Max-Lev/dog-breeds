@@ -10,3 +10,8 @@ export interface IBreed {
     id?: number
     subBreeds: string[];
 }
+
+export interface IByBreedResponse {
+     message: string[];
+     success: string ;
+}

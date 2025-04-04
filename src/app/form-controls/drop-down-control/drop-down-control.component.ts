@@ -33,7 +33,6 @@ export class DropDownControlComponent implements ControlValueAccessor, OnDestroy
 
   @Input() options: IBreed[] = [];
 
-
   // This function sets the value of the dropDownControl to the given value
   writeValue(value: any): void {
     // Set the value of the dropDownControl to the given value

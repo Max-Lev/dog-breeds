@@ -3,13 +3,15 @@ import {MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { TABS_CONFIG } from './config';
 import { Subject, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-tabs-container',
   standalone: true,
   imports: [
     RouterModule,
-    MatTabsModule
+    MatTabsModule,
+    CommonModule
   ],
   templateUrl: './tabs-container.component.html',
   styleUrl: './tabs-container.component.scss'
@@ -25,8 +27,8 @@ export class TabsContainerComponent implements OnInit,OnDestroy,AfterViewInit {
   destroy$ = new Subject<void>();
 
   activatedRoute = inject(ActivatedRoute);
+
   router = inject(Router);
-  // breedsService = inject(BreedsService);
   
   ngOnInit(): void {
     this.setActiveTab();
@@ -41,8 +43,8 @@ export class TabsContainerComponent implements OnInit,OnDestroy,AfterViewInit {
         const currentRoute = this.activatedRoute.root;
         let child = currentRoute.firstChild;
         if (child && child.snapshot.url.length) {
-          const index = this.links.findIndex(link => link.toLocaleLowerCase() === child.snapshot.url[0].path);
-          this.activeLink = this.links[index];
+          const linkIndex = this.links.findIndex(link => link.toLocaleLowerCase() === child.snapshot.url[0].path);
+          this.activeLink = this.links[linkIndex];
         }
       }
     });

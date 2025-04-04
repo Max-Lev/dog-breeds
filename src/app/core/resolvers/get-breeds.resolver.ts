@@ -7,6 +7,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 export const GetBreedsResolver: ResolveFn<Observable<IBreed[]>> = (route, state) => {
   const breedsService = inject(BreedsService)
-  return breedsService.getAllBreeds();
+  return breedsService.getAllBreeds$();
   
 };
