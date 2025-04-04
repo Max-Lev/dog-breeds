@@ -11,5 +11,10 @@
 .formContainer {
     display: flex;
     justify-content: space-around;
-    align-items: center;
+    // align-items: center;
+    .controlContainer{
+        // border: 1px dotted #ccc;
+        display: flex;
+        flex-direction: column;
+    }
   }

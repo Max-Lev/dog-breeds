@@ -1,4 +1,15 @@
 <mat-form-field class="example-full-width">
-    <mat-label>Size</mat-label>
-    <input [formControl]="sizeCntrl" matInput type="number">
+
+  <mat-label>Range</mat-label>
+
+  <!-- [min]="range.min" [max]="range.max"  -->
+    <input [formControl]="rangeCntrl" matInput type="number">
+    
+    <!-- <mat-error *ngIf="rangeCntrl.hasError('min')">Minimum is {{ range.min }}</mat-error>
+
+    <mat-error *ngIf="rangeCntrl.hasError('max')">Maximum is {{ range.max }}</mat-error> -->
+
   </mat-form-field>
+
+  
+  

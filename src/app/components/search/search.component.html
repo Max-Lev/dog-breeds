@@ -1,6 +1,22 @@
 <section class="container">
     <form [formGroup]="searchForm" class="formContainer">
-        <app-drop-down [options]="breeds" formControlName="breedName"></app-drop-down>
-        <app-size-control formControlName="sizeCntrl"></app-size-control>
+
+        <div class="controlContainer">
+            <app-drop-down [options]="breeds" formControlName="breedName"></app-drop-down>
+        </div>
+
+        <div class="controlContainer">
+            <app-size-control formControlName="rangeCntrl"></app-size-control>
+            <mat-error *ngIf="searchForm.get('rangeCntrl')?.hasError('min')">Minimum is {{ RANGE_CONFIG.min}}</mat-error>
+            <mat-error *ngIf="searchForm.get('rangeCntrl')?.hasError('max')">Maximum is {{ RANGE_CONFIG.max }}</mat-error>
+            <mat-error *ngIf="searchForm.get('rangeCntrl')?.hasError('required')">Range is required</mat-error>
+        </div>
+
+
+        <!-- <mat-error *ngIf="rangeCntrl.invalid && (rangeCntrl.dirty || rangeCntrl.touched)">
+            <ng-container *ngIf="rangeCntrl.hasError('min')">Minimum is {{ range.min }}</ng-container>
+            <ng-container *ngIf="rangeCntrl.hasError('max')">Maximum is {{ range.max }}</ng-container>
+          </mat-error> -->
+
     </form>
 </section>
