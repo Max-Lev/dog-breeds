@@ -1,16 +1,17 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, effect, inject, Input, OnChanges, OnInit, signal, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/internal/Subject';
 import { DropDownControlComponent } from '../../form-controls/drop-down-control/drop-down-control.component';
 import { SizeControlComponent } from '../../form-controls/size-control/size-control.component';
 import { ActivatedRoute } from '@angular/router';
-import { IBreed, IByBreedResponse } from '../../core/models/breeds.model';
+import { IAlbum, IBreed, IByBreedResponse } from '../../core/models/breeds.model';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BreedsService } from '../../core/providers/breeds.service';
 import { Observable } from 'rxjs';
+import { AlbumComponent } from '../album/album.component';
 
 @Component({
   selector: 'app-search',
@@ -21,7 +22,8 @@ import { Observable } from 'rxjs';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    CommonModule
+    CommonModule,
+    AlbumComponent
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',
@@ -36,7 +38,8 @@ export class SearchComponent implements OnInit, OnChanges, AfterViewInit {
 
   searchForm = new FormGroup({
     breedName: new FormControl('', { nonNullable: true }),
-    rangeCntrl: new FormControl(null, [Validators.min(this.RANGE_CONFIG.min), Validators.max(this.RANGE_CONFIG.max)])
+    rangeCntrl: new FormControl(null,
+      [Validators.min(this.RANGE_CONFIG.min), Validators.max(this.RANGE_CONFIG.max)])
   });
 
   activatedRoute = inject(ActivatedRoute);
@@ -47,18 +50,22 @@ export class SearchComponent implements OnInit, OnChanges, AfterViewInit {
 
   breedsService = inject(BreedsService);
 
+  albums$ = signal<IAlbum>({images:[]});
+
+  breedImages$ = computed(() => this.albums$()?.images ?? []);
+
+  constructor(){
+    effect(()=>{
+      console.log(this.albums$().images);
+    });
+  }
+
   ngOnInit(): void {
-
     this.addRangeRequiredValidator$();
-
-    // this.getResolvedData$();
-
   }
 
   ngAfterViewInit(): void {
-
     this.formAction$();
-
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -72,14 +79,15 @@ export class SearchComponent implements OnInit, OnChanges, AfterViewInit {
       filter(() => this.searchForm.valid && !!this.searchForm.value.breedName && !!this.searchForm.value.rangeCntrl),
       switchMap((value: Partial<{ breedName: string, rangeCntrl: null }>) => this.getByBreed$(value.breedName as string)),
       takeUntil(this.destroy$),
-    ).subscribe((response: IByBreedResponse) => {
+    ).subscribe((response: IAlbum) => {
       console.log('valid ', this.searchForm.valid);
       console.log('searchForm ', this.searchForm);
       console.log('response ', response);
+      this.albums$.set(response);
     });
   }
 
-  getByBreed$(breed: string): Observable<IByBreedResponse> {
+  getByBreed$(breed: string): Observable<IAlbum> {
     return this.breedsService.getByBreed(breed);
   }
 

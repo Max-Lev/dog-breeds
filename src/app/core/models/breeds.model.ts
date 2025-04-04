@@ -15,3 +15,7 @@ export interface IByBreedResponse {
      message: string[];
      success: string ;
 }
+
+export interface IAlbum{
+    images:string[];
+}

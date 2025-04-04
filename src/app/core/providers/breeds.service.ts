@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { IBreed, IBreedsResponse, IByBreedResponse } from '../models/breeds.model';
+import { IAlbum, IBreed, IBreedsResponse, IByBreedResponse } from '../models/breeds.model';
 import { filter, map, shareReplay, tap } from 'rxjs/operators';
 import { Observable, ReplaySubject } from 'rxjs';
 
@@ -42,9 +42,12 @@ export class BreedsService {
     return breedsWithSubBreeds;
   }
 
-  getByBreed(name: string): Observable<IByBreedResponse> {
+  getByBreed(name: string): Observable<IAlbum> {
     const url = `${environment.byBreed}/${name}/images`;
-    return this.http.get<{ message: string[], success: string }>(url);
+    return this.http.get<IByBreedResponse>(url).pipe(
+      map((response: IByBreedResponse) => ({ images: response.message }))
+    );
+
   }
 
 

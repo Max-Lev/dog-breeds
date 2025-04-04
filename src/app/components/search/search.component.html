@@ -7,8 +7,10 @@
 
         <div class="controlContainer">
             <app-size-control formControlName="rangeCntrl"></app-size-control>
-            <mat-error *ngIf="searchForm.get('rangeCntrl')?.hasError('min')">Minimum is {{ RANGE_CONFIG.min}}</mat-error>
-            <mat-error *ngIf="searchForm.get('rangeCntrl')?.hasError('max')">Maximum is {{ RANGE_CONFIG.max }}</mat-error>
+            <mat-error *ngIf="searchForm.get('rangeCntrl')?.hasError('min')">Minimum is {{
+                RANGE_CONFIG.min}}</mat-error>
+            <mat-error *ngIf="searchForm.get('rangeCntrl')?.hasError('max')">Maximum is {{ RANGE_CONFIG.max
+                }}</mat-error>
             <mat-error *ngIf="searchForm.get('rangeCntrl')?.hasError('required')">Range is required</mat-error>
         </div>
 
@@ -17,6 +19,14 @@
             <ng-container *ngIf="rangeCntrl.hasError('min')">Minimum is {{ range.min }}</ng-container>
             <ng-container *ngIf="rangeCntrl.hasError('max')">Maximum is {{ range.max }}</ng-container>
           </mat-error> -->
-
     </form>
+
+    <!-- JUST IN ANY CASE -->
+    @if (breedImages$().length > 0) {
+    <div>
+        <app-album [albums]="this.albums$().images"></app-album>
+    </div>
+    }
+
+
 </section>
