@@ -1,6 +1,6 @@
 <section class="container">
     <form [formGroup]="searchForm" class="formContainer">
-        <app-drop-down formControlName="breedName"></app-drop-down>
+        <app-drop-down [options]="breeds" formControlName="breedName"></app-drop-down>
         <app-size-control formControlName="sizeCntrl"></app-size-control>
     </form>
 </section>

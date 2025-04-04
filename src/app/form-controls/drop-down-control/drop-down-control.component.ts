@@ -1,10 +1,12 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ControlValueAccessor, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import DROPDOWN_CONTROL_PROVIDERS from './config';
+import { IBreed } from '../../core/models/breeds.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-drop-down',
@@ -12,7 +14,8 @@ import DROPDOWN_CONTROL_PROVIDERS from './config';
   imports: [
     MatSelectModule,
     MatFormFieldModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   providers: [...DROPDOWN_CONTROL_PROVIDERS],
   templateUrl: './drop-down-control.component.html',
@@ -27,6 +30,8 @@ export class DropDownControlComponent implements ControlValueAccessor, OnDestroy
   onTouched: any = () => { };
   
   private destroy$ = new Subject<void>();
+
+  @Input() options: IBreed[] = [];
 
 
   // This function sets the value of the dropDownControl to the given value
@@ -58,8 +63,11 @@ export class DropDownControlComponent implements ControlValueAccessor, OnDestroy
   }
 
 
+  // This function is called when the component is destroyed
   ngOnDestroy(): void {
+    // This line emits a value to the destroy$ observable
     this.destroy$.next();
+    // This line completes the destroy$ observable
     this.destroy$.complete();
   }
 

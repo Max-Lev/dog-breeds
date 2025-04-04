@@ -1,8 +1,9 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
+import { AfterViewInit, Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatTabNavPanel, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { TABS_CONFIG } from './config';
 import { Subject, takeUntil } from 'rxjs';
+import { BreedsService } from '../../core/providers/breeds.service';
 
 @Component({
   selector: 'app-tabs-container',
@@ -14,18 +15,24 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './tabs-container.component.html',
   styleUrl: './tabs-container.component.scss'
 })
-export class TabsContainerComponent implements OnInit,OnDestroy {
+export class TabsContainerComponent implements OnInit,OnDestroy,AfterViewInit {
+  ngAfterViewInit(): void {
+    console.log(this.tabPanel)
+  }
   
   links = TABS_CONFIG.links;
   activeLink = TABS_CONFIG.activeLink
   background = TABS_CONFIG.background;
+  destroy$ = new Subject<void>();
 
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
-  destroy$ = new Subject<void>();
+  breedsService = inject(BreedsService);
+  @ViewChild('tabPanel') tabPanel!: MatTabNavPanel;
 
   ngOnInit(): void {
     this.setActiveTab();
+
   }
 
   setActiveTab() {
