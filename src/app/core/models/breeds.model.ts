@@ -6,9 +6,14 @@ export interface IBreedsResponse {
 }
 
 export interface IBreed {
-    breed: string;
+    name: string;
     id?: number
     subBreeds: string[];
+}
+
+export interface IOptions{
+    id?:number | null;
+    name:string;
 }
 
 export interface IByBreedResponse {

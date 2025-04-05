@@ -2,15 +2,16 @@ import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, c
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs/internal/Subject';
-import { DropDownControlComponent } from '../../form-controls/drop-down-control/drop-down-control.component';
-import { SizeControlComponent } from '../../form-controls/size-control/size-control.component';
-import { IAlbum, IBreed } from '../../core/models/breeds.model';
+import { DropDownControlComponent } from '../../shared/drop-down-control/drop-down-control.component';
+import { SizeControlComponent } from '../../shared/size-control/size-control.component';
+import { IAlbum, IBreed, IOptions } from '../../core/models/breeds.model';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BreedsService } from '../../core/providers/breeds.service';
 import { Observable } from 'rxjs';
 import { AlbumComponent } from '../album/album.component';
+import { SizeErrorsComponent } from '../../shared/size-errors/size-errors.component';
 
 @Component({
   selector: 'app-search',
@@ -22,7 +23,8 @@ import { AlbumComponent } from '../album/album.component';
     MatFormFieldModule,
     MatInputModule,
     CommonModule,
-    AlbumComponent
+    AlbumComponent,
+    SizeErrorsComponent
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',
@@ -45,7 +47,8 @@ export class SearchComponent implements OnInit, OnChanges, AfterViewInit {
 
   private cdRef = inject(ChangeDetectorRef);
 
-  @Input() breeds!: IBreed[];
+  // @Input() breeds!: IBreed[];
+  @Input() breeds!: IOptions[];
 
   private breedsService = inject(BreedsService);
 

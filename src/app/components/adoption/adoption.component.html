@@ -1,1 +1,16 @@
-<p>adoption works!</p>
+<div class="container">
+
+    <form [formGroup]="adoptionForm">
+
+        <section>
+            <app-size-control [cntrlName]="'Kg'" formControlName="weight"></app-size-control>
+            <app-size-errors [control]="adoptionForm.get('weight')" 
+            [RANGE_CONFIG]="WEIGHT_RANGE"></app-size-errors>
+        </section>
+        <section>
+            <app-drop-down [cntrlName]="'Dog Color'" [options]="colorOptions" formControlName="color"></app-drop-down>
+        </section>
+
+    </form>
+
+</div>

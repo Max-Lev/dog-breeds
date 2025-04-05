@@ -5,7 +5,7 @@ import { ControlValueAccessor, FormControl, ReactiveFormsModule } from '@angular
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import DROPDOWN_CONTROL_PROVIDERS from './config';
-import { IBreed } from '../../core/models/breeds.model';
+import { IBreed, IOptions } from '../../core/models/breeds.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -31,7 +31,9 @@ export class DropDownControlComponent implements ControlValueAccessor, OnDestroy
   
   private destroy$ = new Subject<void>();
 
-  @Input() options: IBreed[] = [];
+  @Input() options: IOptions[] = [];
+
+  @Input({required:true}) cntrlName!:string;
 
   // This function sets the value of the dropDownControl to the given value
   writeValue(value: any): void {

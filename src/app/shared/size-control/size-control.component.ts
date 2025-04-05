@@ -24,6 +24,8 @@ import { SizeControlAccessor } from './size-control-accessor';
 })
 export class SizeControlComponent implements OnInit, AfterViewInit, ControlValueAccessor, Validator, OnDestroy, OnChanges {
 
+  @Input() cntrlName: string = '';
+
   // FormControl to store the size value
   rangeCntrl = new FormControl(1);
 

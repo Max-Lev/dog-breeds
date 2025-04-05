@@ -2,16 +2,14 @@
     <form [formGroup]="searchForm" class="formContainer">
 
         <div class="controlContainer">
-            <app-drop-down [options]="breeds" formControlName="breedName"></app-drop-down>
+            <app-drop-down [cntrlName]="'Dog Breed'" [options]="breeds" formControlName="breedName"></app-drop-down>
         </div>
 
         <div class="controlContainer">
-            <app-size-control formControlName="rangeCntrl"></app-size-control>
-            <mat-error *ngIf="searchForm.get('rangeCntrl')?.hasError('min')">Minimum is {{
-                RANGE_CONFIG.min}}</mat-error>
-            <mat-error *ngIf="searchForm.get('rangeCntrl')?.hasError('max')">Maximum is {{
-                RANGE_CONFIG.max}}</mat-error>
-            <mat-error *ngIf="searchForm.get('rangeCntrl')?.hasError('required')">Range is required</mat-error>
+
+            <app-size-control [cntrlName]="'Range'" formControlName="rangeCntrl"></app-size-control>
+            <app-size-errors [control]="searchForm.get('rangeCntrl')" [RANGE_CONFIG]="RANGE_CONFIG"></app-size-errors>
+
         </div>
 
     </form>
@@ -21,8 +19,5 @@
             <app-album [albums]="albumSizeSignal$()"></app-album>
           } 
     </ng-container>
-
-
-
 
 </section>

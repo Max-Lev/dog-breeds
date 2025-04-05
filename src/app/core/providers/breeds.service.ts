@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { IAlbum, IBreed, IBreedsResponse, IByBreedResponse } from '../models/breeds.model';
+import { IAlbum, IBreed, IBreedsResponse, IByBreedResponse, IOptions } from '../models/breeds.model';
 import { catchError, filter, map, shareReplay, tap } from 'rxjs/operators';
 import { Observable, ReplaySubject } from 'rxjs';
 
@@ -13,15 +13,11 @@ export class BreedsService {
 
   private http = inject(HttpClient);
 
-  private breedsCache = new ReplaySubject<IBreed[]>(1);
+  private breedsCache = new ReplaySubject<IOptions[]>(1);
 
   isLoaded: boolean = false;
 
-  constructor() {
-
-  }
-
-  getAllBreeds$ = (): Observable<IBreed[]> => {
+  getAllBreeds$ = (): Observable<IOptions[]> => {
     if (!this.isLoaded) {
       this.http.get<IBreedsResponse>(environment.allBreeds).pipe(
         map((response: IBreedsResponse) => this.findSubBreeds(response))
@@ -31,19 +27,21 @@ export class BreedsService {
     return this.breedsCache.asObservable();
   };
 
-  private findSubBreeds = (response: IBreedsResponse): IBreed[] => {
+  private findSubBreeds = (response: IBreedsResponse): IOptions[] => {
     const breedsWithSubBreeds: IBreed[] = Object.entries(response.message)
       .filter(([breed, subBreeds]) => subBreeds.length > 0)
       .map(([breed, subBreeds], index) => ({
         id: index + 1,
-        breed: breed,
+        name: breed,
         subBreeds: subBreeds
       }));
     return breedsWithSubBreeds;
   }
 
   getByBreed(name: string): Observable<IAlbum> {
+
     const url = `${environment.byBreed}/${name}/images`;
+
     return this.http.get<IByBreedResponse>(url).pipe(
       catchError((err) => {
         console.log(err);

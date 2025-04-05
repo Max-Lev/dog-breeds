@@ -1,0 +1,3 @@
+<mat-error *ngIf="control?.hasError('min')">Minimum is {{RANGE_CONFIG.min}}</mat-error>
+<mat-error *ngIf="control?.hasError('max')">Maximum is {{RANGE_CONFIG.max}}</mat-error>
+<mat-error *ngIf="control?.hasError('required')">Range is required</mat-error>
