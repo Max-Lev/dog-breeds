@@ -112,7 +112,7 @@ export class SearchComponent implements OnInit, OnChanges, AfterViewInit {
   private addRangeRequiredValidator$() {
     this.searchForm.controls.rangeCntrl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
       if (this.searchForm.controls.rangeCntrl.dirty) {
-        this.searchForm.controls.rangeCntrl.addValidators(Validators.required)
+        this.searchForm.controls.rangeCntrl.addValidators(Validators.required);
         this.searchForm.controls.rangeCntrl.updateValueAndValidity({ emitEvent: false });
       }
     });

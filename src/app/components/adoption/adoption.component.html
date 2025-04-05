@@ -3,7 +3,7 @@
     <form [formGroup]="adoptionForm">
 
         <section>
-            <app-size-control [cntrlTitle]="'Kg'" formControlName="weight"></app-size-control>
+            <app-size-control [cntrlTitle]="'Weight/Kg'" formControlName="weight"></app-size-control>
             <app-size-errors [control]="adoptionForm.get('weight')" 
             [RANGE_CONFIG]="WEIGHT_RANGE"></app-size-errors>
         </section>

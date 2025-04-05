@@ -30,12 +30,13 @@ const OPTIONS = [
 export class AdoptionComponent implements AfterViewInit {
 
   WEIGHT_RANGE = { min: 1, max: 100 };
+  AGE_RANGE = { min: 0, max: 20 };
+  NEW_AGE_RANGE = { min: 0, max: 8 };
 
   colorOptions: IOptions[] = OPTIONS;
 
   adoptionForm = new FormGroup({
-    weight: new FormControl<number | null>(this.WEIGHT_RANGE.min, [
-      Validators.required,
+    weight: new FormControl(null,[
       Validators.min(this.WEIGHT_RANGE.min),
       Validators.max(this.WEIGHT_RANGE.max)
     ]),
@@ -49,7 +50,11 @@ export class AdoptionComponent implements AfterViewInit {
   }
   ngAfterViewInit(): void {
     this.adoptionForm.valueChanges.subscribe((value) => {
+      if(this.adoptionForm.controls.weight.dirty){
+        this.adoptionForm.controls.weight.addValidators(Validators.required);
+      }
       console.log(value);
+      console.log(this.adoptionForm);
     })
   }
 }
