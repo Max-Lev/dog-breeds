@@ -1,0 +1,9 @@
+::ng-deep .checkBox {
+
+    .mdc-form-field {
+        color: white !important;
+    }
+    .mdc-checkbox .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate):not([data-indeterminate=true])~.mdc-checkbox__background {
+        background-color: white !important;
+    }
+}

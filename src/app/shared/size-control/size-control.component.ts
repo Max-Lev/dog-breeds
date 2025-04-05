@@ -6,7 +6,6 @@ import { takeUntil } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
-import { SizeControlAccessor } from './size-control-accessor';
 
 @Component({
   selector: 'app-size-control',
@@ -24,12 +23,10 @@ import { SizeControlAccessor } from './size-control-accessor';
 })
 export class SizeControlComponent implements OnInit, AfterViewInit, ControlValueAccessor, Validator, OnDestroy, OnChanges {
 
-  @Input() cntrlName: string = '';
+  @Input() cntrlTitle: string = '';
 
   // FormControl to store the size value
-  rangeCntrl = new FormControl(1);
-
-  // accessor = new SizeControlAccessor(this.rangeCntrl)
+  rangeCntrl = new FormControl();
 
   // Function to call when the value changes
   onChange: any = () => { };
@@ -39,18 +36,6 @@ export class SizeControlComponent implements OnInit, AfterViewInit, ControlValue
 
   // Subject to unsubscribe from observables
   private destroy$ = new Subject<void>();
-  /*
-    writeValue = this.accessor.writeValue.bind(this.accessor);
-    registerOnChange = (fn: any) => {
-      this.accessor.registerOnChange(fn);
-      this.accessor.registerOnChange((value:any) => this.onChange(value));
-    };
-    registerOnTouched = (fn: any) => this.onTouched = fn;
-    setDisabledState = (isDisabled: boolean) => this.accessor.setDisabledState(isDisabled);
-    // Validator
-    validate = (control: AbstractControl): ValidationErrors | null => this.accessor.validate(control);
-    registerOnValidatorChange = (fn: () => void) => this.accessor.registerOnValidatorChange(fn);
-  */
 
   // Set the value of the FormControl
   writeValue(obj: any): void { this.rangeCntrl.setValue(obj); }

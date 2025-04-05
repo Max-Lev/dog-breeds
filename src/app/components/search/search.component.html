@@ -2,14 +2,12 @@
     <form [formGroup]="searchForm" class="formContainer">
 
         <div class="controlContainer">
-            <app-drop-down [cntrlName]="'Dog Breed'" [options]="breeds" formControlName="breedName"></app-drop-down>
+            <app-drop-down [cntrlTitle]="'Dog Breed'" [options]="breeds" formControlName="breedName"></app-drop-down>
         </div>
 
         <div class="controlContainer">
-
-            <app-size-control [cntrlName]="'Range'" formControlName="rangeCntrl"></app-size-control>
+            <app-size-control [cntrlTitle]="'Range'" formControlName="rangeCntrl"></app-size-control>
             <app-size-errors [control]="searchForm.get('rangeCntrl')" [RANGE_CONFIG]="RANGE_CONFIG"></app-size-errors>
-
         </div>
 
     </form>

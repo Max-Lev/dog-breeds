@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropDownControlComponent } from '../../shared/drop-down-control/drop-down-control.component';
 import { SizeControlComponent } from '../../shared/size-control/size-control.component';
@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SizeErrorsComponent } from '../../shared/size-errors/size-errors.component';
 import { IOptions } from '../../core/models/breeds.model';
+import { CheckBoxComponent } from '../../shared/check-box/check-box.component';
 const OPTIONS = [
   { id: 1, name: 'White' }, { id: 2, name: 'Black' },
   { id: 3, name: 'Brown' }, { id: 4, name: 'Golden' },
@@ -20,12 +21,13 @@ const OPTIONS = [
     SizeControlComponent,
     MatFormFieldModule,
     MatInputModule,
-    SizeErrorsComponent
+    SizeErrorsComponent,
+    CheckBoxComponent
   ],
   templateUrl: './adoption.component.html',
   styleUrl: './adoption.component.scss'
 })
-export class AdoptionComponent {
+export class AdoptionComponent implements AfterViewInit {
 
   WEIGHT_RANGE = { min: 1, max: 100 };
 
@@ -44,5 +46,10 @@ export class AdoptionComponent {
 
   constructor() {
 
+  }
+  ngAfterViewInit(): void {
+    this.adoptionForm.valueChanges.subscribe((value) => {
+      console.log(value);
+    })
   }
 }

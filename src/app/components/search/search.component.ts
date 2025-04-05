@@ -4,7 +4,7 @@ import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil, tap }
 import { Subject } from 'rxjs/internal/Subject';
 import { DropDownControlComponent } from '../../shared/drop-down-control/drop-down-control.component';
 import { SizeControlComponent } from '../../shared/size-control/size-control.component';
-import { IAlbum, IBreed, IOptions } from '../../core/models/breeds.model';
+import { IAlbum, IOptions } from '../../core/models/breeds.model';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -42,12 +42,12 @@ export class SearchComponent implements OnInit, OnChanges, AfterViewInit {
       [Validators.min(this.RANGE_CONFIG.min), Validators.max(this.RANGE_CONFIG.max)])
   });
 
-  private isValid = () => this.searchForm.valid && !!this.searchForm.value.breedName &&
-    !!this.searchForm.value.rangeCntrl;
+  private isValid = () => this.searchForm.valid && 
+  !!this.searchForm.value.breedName &&
+  !!this.searchForm.value.rangeCntrl;
 
   private cdRef = inject(ChangeDetectorRef);
 
-  // @Input() breeds!: IBreed[];
   @Input() breeds!: IOptions[];
 
   private breedsService = inject(BreedsService);

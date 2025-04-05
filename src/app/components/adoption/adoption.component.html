@@ -3,12 +3,17 @@
     <form [formGroup]="adoptionForm">
 
         <section>
-            <app-size-control [cntrlName]="'Kg'" formControlName="weight"></app-size-control>
+            <app-size-control [cntrlTitle]="'Kg'" formControlName="weight"></app-size-control>
             <app-size-errors [control]="adoptionForm.get('weight')" 
             [RANGE_CONFIG]="WEIGHT_RANGE"></app-size-errors>
         </section>
         <section>
-            <app-drop-down [cntrlName]="'Dog Color'" [options]="colorOptions" formControlName="color"></app-drop-down>
+            <app-drop-down [cntrlTitle]="'Dog Color'" 
+            [options]="colorOptions" 
+            formControlName="color"></app-drop-down>
+        </section>
+        <section>
+            <app-check-box formControlName="isFirst"></app-check-box>
         </section>
 
     </form>

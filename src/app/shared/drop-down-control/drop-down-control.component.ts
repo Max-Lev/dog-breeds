@@ -33,7 +33,7 @@ export class DropDownControlComponent implements ControlValueAccessor, OnDestroy
 
   @Input() options: IOptions[] = [];
 
-  @Input({required:true}) cntrlName!:string;
+  @Input({required:true}) cntrlTitle!:string;
 
   // This function sets the value of the dropDownControl to the given value
   writeValue(value: any): void {
@@ -47,7 +47,7 @@ export class DropDownControlComponent implements ControlValueAccessor, OnDestroy
     // Subscribe to the valueChanges observable of the dropDownControl and call the onChange function when the value changes
     this.dropDownControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
       this.onChange(value);
-      fn(value);           
+      fn(value);         
     });
   }
 
