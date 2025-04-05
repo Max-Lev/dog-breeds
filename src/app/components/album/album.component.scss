@@ -3,7 +3,17 @@
     flex-wrap: wrap;
     justify-content: center;
 
-    .example-card {
+    .card {
         max-width: 400px;
+        width: 30%;
+        height: auto;
+        min-height: 250px;
+        border: 1px solid;
+        padding: 1rem;
+        margin: 1rem;
+        box-sizing: border-box;
+        background: center;
+        background-size: contain;
+        background-repeat: no-repeat;
     }
 }
