@@ -1,11 +1,16 @@
 <ng-container>
     @for (item of albums; track $index) {
+    <div class="card" [ngStyle]="{ 'background-image': 'url(' + item + ')'}">
+        <h4>{{$index+1}}</h4>
+    </div>
 
-        <!-- <mat-card class="card" appearance="outlined">
-            <img mat-card-image [src]="item" alt="">
-        </mat-card> -->
-        
-        <div class="card" [ngStyle]="{ 'background-image': 'url(' + item + ')'}"></div>
-        
-        }
+    
+    <!-- <div class="card">
+        <h4>{{$index+1}}</h4> -->
+        <!-- <img height="auto" width="auto" ngSrc="{{item}}"> -->
+        <!-- <img class="card" [src]="item" />
+    </div> -->
+    
+
+    }
 </ng-container>

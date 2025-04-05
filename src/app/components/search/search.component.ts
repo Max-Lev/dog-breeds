@@ -1,11 +1,10 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, effect, inject, Input, OnChanges, OnInit, signal, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, effect, inject, Input, OnChanges, OnInit, Signal, signal, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs/internal/Subject';
 import { DropDownControlComponent } from '../../form-controls/drop-down-control/drop-down-control.component';
 import { SizeControlComponent } from '../../form-controls/size-control/size-control.component';
-import { ActivatedRoute } from '@angular/router';
-import { IAlbum, IBreed, IByBreedResponse } from '../../core/models/breeds.model';
+import { IAlbum, IBreed } from '../../core/models/breeds.model';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -31,7 +30,6 @@ import { AlbumComponent } from '../album/album.component';
 })
 export class SearchComponent implements OnInit, OnChanges, AfterViewInit {
 
-
   RANGE_CONFIG = { min: 1, max: 50 };
 
   private destroy$ = new Subject<void>();
@@ -42,21 +40,32 @@ export class SearchComponent implements OnInit, OnChanges, AfterViewInit {
       [Validators.min(this.RANGE_CONFIG.min), Validators.max(this.RANGE_CONFIG.max)])
   });
 
-  activatedRoute = inject(ActivatedRoute);
+  private isValid = () => this.searchForm.valid && !!this.searchForm.value.breedName &&
+    !!this.searchForm.value.rangeCntrl;
 
-  cdRef = inject(ChangeDetectorRef);
+  private cdRef = inject(ChangeDetectorRef);
 
   @Input() breeds!: IBreed[];
 
-  breedsService = inject(BreedsService);
+  private breedsService = inject(BreedsService);
 
-  albums$ = signal<IAlbum>({images:[]});
+  private albumsResponseSignal$ = signal<IAlbum>({ images: [] });
 
-  breedImages$ = computed(() => this.albums$()?.images ?? []);
+  private rangeValueSignal$ = signal<number>(this.RANGE_CONFIG.min);
 
-  constructor(){
-    effect(()=>{
-      console.log(this.albums$().images);
+  albumSizeSignal$: Signal<string[]> = computed(() => {
+    const response = this.albumsResponseSignal$().images;
+    const limit = this.rangeValueSignal$();
+    const albumsSize = response.slice(0, limit) ?? [];
+    console.log('albumsSize ', albumsSize);
+    return albumsSize;
+  });
+
+  constructor() {
+    effect(() => {
+      // console.log('albums$: ', this.albumsResponseSignal$().images);
+      // console.log('displayAmount$: ', this.displayAmount$());
+      // console.log('filterLenght$: ', this.display$());
     });
   }
 
@@ -72,26 +81,32 @@ export class SearchComponent implements OnInit, OnChanges, AfterViewInit {
     console.log(changes)
   }
 
-  formAction$() {
+  private formAction$() {
     this.searchForm.valueChanges.pipe(
-      debounceTime(1000),
+      filter(() => this.isValid()),
+      debounceTime(1500),
       distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)),
-      filter(() => this.searchForm.valid && !!this.searchForm.value.breedName && !!this.searchForm.value.rangeCntrl),
+      tap((value) => this.setRangeSignalValue(value)),
       switchMap((value: Partial<{ breedName: string, rangeCntrl: null }>) => this.getByBreed$(value.breedName as string)),
       takeUntil(this.destroy$),
-    ).subscribe((response: IAlbum) => {
-      console.log('valid ', this.searchForm.valid);
-      console.log('searchForm ', this.searchForm);
-      console.log('response ', response);
-      this.albums$.set(response);
-    });
+    ).subscribe({
+      next: (response: IAlbum) => {
+        console.log('response ', response);
+        this.albumsResponseSignal$.set(response);
+      }
+    })
   }
 
-  getByBreed$(breed: string): Observable<IAlbum> {
+
+  private setRangeSignalValue(value: Partial<{ breedName: string, rangeCntrl: null }>) {
+    this.rangeValueSignal$.set(value.rangeCntrl ?? 0)
+  }
+
+  private getByBreed$(breed: string): Observable<IAlbum> {
     return this.breedsService.getByBreed(breed);
   }
 
-  addRangeRequiredValidator$() {
+  private addRangeRequiredValidator$() {
     this.searchForm.controls.rangeCntrl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
       if (this.searchForm.controls.rangeCntrl.dirty) {
         this.searchForm.controls.rangeCntrl.addValidators(Validators.required)
@@ -99,13 +114,6 @@ export class SearchComponent implements OnInit, OnChanges, AfterViewInit {
       }
     });
   }
-
-  // getResolvedData$() {
-  //   // this.activatedRoute.data.pipe(takeUntil(this.destroy$)).subscribe((data: Data) => {
-  //   //   // this.breeds = data['breeds'];
-  //   //   // console.log(this.breeds);
-  //   // });
-  // }
 
   ngOnDestroy(): void {
     this.destroy$.next();

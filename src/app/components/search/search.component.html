@@ -16,9 +16,13 @@
 
     </form>
 
-    @if (breedImages$().length > 0) {
-        <app-album [albums]="this.albums$().images"></app-album>
-    }
+    <ng-container>
+        @defer (when albumSizeSignal$().length > 0) {
+            <app-album [albums]="albumSizeSignal$()"></app-album>
+          } 
+    </ng-container>
+
+
 
 
 </section>
