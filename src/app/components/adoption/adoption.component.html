@@ -15,6 +15,11 @@
         <section>
             <app-check-box formControlName="isFirst"></app-check-box>
         </section>
+        <section>
+            <app-size-control [cntrlTitle]="'Age'" formControlName="age"></app-size-control>
+            <app-size-errors [control]="adoptionForm.get('age')" 
+            [RANGE_CONFIG]="AGE_RANGE"></app-size-errors>
+        </section>
 
     </form>
 

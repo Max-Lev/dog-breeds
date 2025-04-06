@@ -36,13 +36,16 @@ export class AdoptionComponent implements AfterViewInit {
   colorOptions: IOptions[] = OPTIONS;
 
   adoptionForm = new FormGroup({
-    weight: new FormControl(null,[
+    weight: new FormControl(null, [
       Validators.min(this.WEIGHT_RANGE.min),
       Validators.max(this.WEIGHT_RANGE.max)
     ]),
     color: new FormControl<IOptions>({ id: null, name: '' }, Validators.required),
     isFirst: new FormControl<boolean>(false),
-    age: new FormControl<number | null>(null)
+    age: new FormControl<number | null>(null, [
+      Validators.min(this.AGE_RANGE.min),
+      Validators.max(this.AGE_RANGE.max)
+    ])
   });
 
   constructor() {
@@ -50,8 +53,22 @@ export class AdoptionComponent implements AfterViewInit {
   }
   ngAfterViewInit(): void {
     this.adoptionForm.valueChanges.subscribe((value) => {
-      if(this.adoptionForm.controls.weight.dirty){
+      if (this.adoptionForm.controls.weight.dirty) {
         this.adoptionForm.controls.weight.addValidators(Validators.required);
+        this.adoptionForm.controls.weight.updateValueAndValidity({ emitEvent: false });
+      }
+      if (this.adoptionForm.controls.isFirst.value) {
+        this.adoptionForm.controls.age.setValidators([
+          Validators.min(this.NEW_AGE_RANGE.min),
+          Validators.max(this.NEW_AGE_RANGE.max)
+        ]);
+        this.adoptionForm.controls.age.updateValueAndValidity({ emitEvent: false });
+      } else {
+        this.adoptionForm.controls.age.setValidators([
+          Validators.min(this.AGE_RANGE.min),
+          Validators.max(this.AGE_RANGE.max)
+        ]);
+        this.adoptionForm.controls.age.updateValueAndValidity({ emitEvent: false });
       }
       console.log(value);
       console.log(this.adoptionForm);
