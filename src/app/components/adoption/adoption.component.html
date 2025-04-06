@@ -1,24 +1,31 @@
 <div class="container">
 
-    <form [formGroup]="adoptionForm">
+    <form [formGroup]="adoptionForm" (ngSubmit)="onSubmit()">
 
         <section>
             <app-size-control [cntrlTitle]="'Weight/Kg'" formControlName="weight"></app-size-control>
-            <app-size-errors [control]="adoptionForm.get('weight')" 
-            [RANGE_CONFIG]="WEIGHT_RANGE"></app-size-errors>
+            <app-size-errors [control]="adoptionForm.get('weight')"
+                [RANGE_CONFIG]="WEIGHT_RANGE"></app-size-errors>
+                <!-- [formSubmitted]="formSubmitted"  -->
         </section>
+
         <section>
-            <app-drop-down [cntrlTitle]="'Dog Color'" 
-            [options]="colorOptions" 
-            formControlName="color"></app-drop-down>
+            <app-drop-down [cntrlTitle]="'Dog Color'" [options]="colorOptions" formControlName="color"></app-drop-down>
+            <app-size-errors [control]="adoptionForm.get('color')"></app-size-errors>
         </section>
+
         <section>
             <app-check-box formControlName="isFirst"></app-check-box>
         </section>
         <section>
             <app-size-control [cntrlTitle]="'Age'" formControlName="age"></app-size-control>
-            <app-size-errors [control]="adoptionForm.get('age')" 
-            [RANGE_CONFIG]="AGE_RANGE"></app-size-errors>
+            <app-size-errors [control]="adoptionForm.get('age')"
+                [parentForm]="adoptionForm"></app-size-errors>
+            <!-- [RANGE_CONFIG]="ageRangeSignal$()" -->
+        </section>
+        <section>
+            <button [disabled]="adoptionForm.invalid"
+             mat-raised-button color="primary">Submit</button>
         </section>
 
     </form>

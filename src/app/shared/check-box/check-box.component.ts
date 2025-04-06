@@ -47,7 +47,7 @@ export class CheckBoxComponent implements ControlValueAccessor, OnDestroy {
     });
   }
   setDisabledState?(isDisabled: boolean): void {
-    console.log('registerOnTouched', isDisabled)
+    
   }
 
 

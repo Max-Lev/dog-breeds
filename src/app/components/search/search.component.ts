@@ -12,6 +12,7 @@ import { BreedsService } from '../../core/providers/breeds.service';
 import { Observable } from 'rxjs';
 import { AlbumComponent } from '../album/album.component';
 import { SizeErrorsComponent } from '../../shared/size-errors/size-errors.component';
+import { crossFieldRequiredValidator } from './custom.validator';
 
 @Component({
   selector: 'app-search',
@@ -40,11 +41,13 @@ export class SearchComponent implements OnInit, OnChanges, AfterViewInit {
     breedName: new FormControl('', { nonNullable: true }),
     rangeCntrl: new FormControl(null,
       [Validators.min(this.RANGE_CONFIG.min), Validators.max(this.RANGE_CONFIG.max)])
-  });
+  },
+    // { validators: crossFieldValidator }
+  );
 
-  private isValid = () => this.searchForm.valid && 
-  !!this.searchForm.value.breedName &&
-  !!this.searchForm.value.rangeCntrl;
+  private isValid = () => this.searchForm.valid &&
+    !!this.searchForm.value.breedName &&
+    !!this.searchForm.value.rangeCntrl;
 
   private cdRef = inject(ChangeDetectorRef);
 

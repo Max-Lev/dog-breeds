@@ -13,3 +13,8 @@ body {
 }
 
 
+mat-form-field{
+    .mat-mdc-text-field-wrapper{
+        border-radius: 5px;
+    }
+}

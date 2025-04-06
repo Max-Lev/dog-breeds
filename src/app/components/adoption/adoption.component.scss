@@ -4,3 +4,13 @@
     align-items: center;
     margin-top: 1rem;
 }
+
+::ng-deep{
+    .mdc-button{
+        width: 100%;
+    }
+    .mdc-button.mat-mdc-button-disabled{
+        background-color: #505050 !important;
+    color: black !important;;
+    }
+}

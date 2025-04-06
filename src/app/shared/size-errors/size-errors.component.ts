@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
@@ -13,10 +13,18 @@ import { MatInputModule } from '@angular/material/input';
   templateUrl: './size-errors.component.html',
   styleUrl: './size-errors.component.scss'
 })
-export class SizeErrorsComponent {
+export class SizeErrorsComponent implements OnChanges{
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes)
+  }
 
-  @Input( {required:true}) RANGE_CONFIG!:{ min: number, max: number };
+  @Input( {required:false}) RANGE_CONFIG!:{ min: number, max: number };
 
   @Input( {required:true}) control?: AbstractControl | null;
+
+  @Input({required:false}) parentForm?: FormGroup | null;
+
+  @Input({ required: false }) formSubmitted = false;
+
 
 }
