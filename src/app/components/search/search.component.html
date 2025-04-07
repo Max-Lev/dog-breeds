@@ -2,8 +2,7 @@
     <form [formGroup]="searchForm" class="formContainer">
 
         <div class="controlContainer">
-            <app-drop-down [cntrlTitle]="'Dog Breed'" [options]="breeds" formControlName="breedName"></app-drop-down>
-            <!-- <app-size-errors [control]="searchForm.get('breedName')" [RANGE_CONFIG]="RANGE_CONFIG"></app-size-errors> -->
+            <app-drop-down [cntrlTitle]="'Breed'" [options]="breeds" formControlName="breedName"></app-drop-down>
         </div>
 
         <div class="controlContainer">

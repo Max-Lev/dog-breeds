@@ -1,9 +1,9 @@
 
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { IRange } from '../../core/models/breeds.model';
 
-interface AgeRange { min: number; max: number; }
 
-export const ageRangeValidatorFactory = (baseRange: AgeRange, newRange: AgeRange): ValidatorFn => {
+export const ageRangeValidatorFactory = (baseRange: IRange, newRange: IRange): ValidatorFn => {
     return (group: AbstractControl): ValidationErrors | null => {
 
         const isFirst = group.get('isFirst')?.value;

@@ -11,16 +11,21 @@ export interface IBreed {
     subBreeds: string[];
 }
 
-export interface IOptions{
-    id?:number | null;
-    name:string;
+export interface IOptions {
+    id?: number | null;
+    name: string;
 }
 
 export interface IByBreedResponse {
-     message: string[];
-     success: string ;
+    message: string[];
+    success: string;
 }
 
-export interface IAlbum{
-    images:string[];
+export interface IAlbum {
+    images: string[];
+}
+
+export interface IRange {
+    min: number,
+    max: number
 }

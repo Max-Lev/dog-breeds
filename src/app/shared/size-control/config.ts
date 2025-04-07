@@ -10,7 +10,6 @@ export const SIZE_CONTROL_PROVIDERS = [{
 {
     provide: NG_VALIDATORS,
     useExisting: forwardRef(() => SizeControlComponent),
-    // useExisting: SizeControlComponent,
     multi: true
 }
 ];

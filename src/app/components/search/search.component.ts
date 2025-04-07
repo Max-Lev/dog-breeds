@@ -1,10 +1,9 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, effect, inject, Input, OnChanges, OnInit, Signal, signal, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, DestroyRef, inject, Input, OnInit, Signal, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { Subject } from 'rxjs/internal/Subject';
+import { debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 import { DropDownControlComponent } from '../../shared/drop-down-control/drop-down-control.component';
 import { SizeControlComponent } from '../../shared/size-control/size-control.component';
-import { IAlbum, IOptions } from '../../core/models/breeds.model';
+import { IAlbum, IOptions, IRange } from '../../core/models/breeds.model';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -13,6 +12,7 @@ import { Observable } from 'rxjs';
 import { AlbumComponent } from '../album/album.component';
 import { SizeErrorsComponent } from '../../shared/size-errors/size-errors.component';
 import { crossFieldRequiredValidator } from './custom.validator';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-search',
@@ -31,25 +31,30 @@ import { crossFieldRequiredValidator } from './custom.validator';
   styleUrl: './search.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SearchComponent implements OnInit, OnChanges, AfterViewInit {
+export class SearchComponent implements OnInit {
 
-  RANGE_CONFIG = { min: 1, max: 50 };
+  RANGE_CONFIG: IRange = { min: 1, max: 50 };
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   searchForm = new FormGroup({
-    breedName: new FormControl('', { nonNullable: true }),
+    breedName: new FormControl<string>('', { nonNullable: true }),
     rangeCntrl: new FormControl(null,
-      [Validators.min(this.RANGE_CONFIG.min), Validators.max(this.RANGE_CONFIG.max)])
-  },
-    // { validators: crossFieldValidator }
-  );
+      {
+        validators: [
+          Validators.min(this.RANGE_CONFIG.min),
+          Validators.max(this.RANGE_CONFIG.max),
+          Validators.required
+        ],
+        updateOn: 'change'
+      })
+  });
 
-  private isValid = () => this.searchForm.valid &&
-    !!this.searchForm.value.breedName &&
-    !!this.searchForm.value.rangeCntrl;
-
-  private cdRef = inject(ChangeDetectorRef);
+  
+  private isValid = (): boolean => {
+    const { breedName, rangeCntrl } = this.searchForm.getRawValue();
+    return this.searchForm.valid && !!breedName && rangeCntrl != null;
+  };
 
   @Input() breeds!: IOptions[];
 
@@ -57,44 +62,28 @@ export class SearchComponent implements OnInit, OnChanges, AfterViewInit {
 
   private albumsResponseSignal$ = signal<IAlbum>({ images: [] });
 
-  private rangeValueSignal$ = signal<number>(this.RANGE_CONFIG.min);
+  private rangeValueSignal$ = signal<number | null>(null);
 
   albumSizeSignal$: Signal<string[]> = computed(() => {
     const response = this.albumsResponseSignal$().images;
     const limit = this.rangeValueSignal$();
-    const albumsSize = response.slice(0, limit) ?? [];
-    console.log('albumsSize ', albumsSize);
+    const albumsSize = response.slice(0, limit as number) ?? [];
+    console.log('ALBUM SIZE ', albumsSize);
     return albumsSize;
   });
 
-  constructor() {
-    effect(() => {
-      // console.log('albums$: ', this.albumsResponseSignal$().images);
-      // console.log('displayAmount$: ', this.displayAmount$());
-      // console.log('filterLenght$: ', this.display$());
-    });
-  }
-
   ngOnInit(): void {
-    this.addRangeRequiredValidator$();
-  }
-
-  ngAfterViewInit(): void {
     this.formAction$();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
   }
 
   private formAction$() {
     this.searchForm.valueChanges.pipe(
-      filter(() => this.isValid()),
       debounceTime(1500),
-      distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)),
+      filter(() => this.isValid()),
+      distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       tap((value) => this.setRangeSignalValue(value)),
       switchMap((value: Partial<{ breedName: string, rangeCntrl: null }>) => this.getByBreed$(value.breedName as string)),
-      takeUntil(this.destroy$),
+      takeUntilDestroyed(this.destroyRef),
     ).subscribe({
       next: (response: IAlbum) => {
         console.log('API RESPONSE ', response);
@@ -105,25 +94,13 @@ export class SearchComponent implements OnInit, OnChanges, AfterViewInit {
 
 
   private setRangeSignalValue(value: Partial<{ breedName: string, rangeCntrl: null }>) {
-    this.rangeValueSignal$.set(value.rangeCntrl ?? 0)
+    this.rangeValueSignal$.set(value.rangeCntrl ?? 0);
   }
 
   private getByBreed$(breed: string): Observable<IAlbum> {
     return this.breedsService.getByBreed(breed);
   }
 
-  private addRangeRequiredValidator$() {
-    this.searchForm.controls.rangeCntrl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
-      if (this.searchForm.controls.rangeCntrl.dirty) {
-        this.searchForm.controls.rangeCntrl.addValidators(Validators.required);
-        this.searchForm.controls.rangeCntrl.updateValueAndValidity({ emitEvent: false });
-      }
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
+  
+  
 }

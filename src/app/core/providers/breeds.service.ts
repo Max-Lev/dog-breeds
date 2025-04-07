@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { IAlbum, IBreed, IBreedsResponse, IByBreedResponse, IOptions } from '../models/breeds.model';
-import { catchError, filter, map, shareReplay, tap } from 'rxjs/operators';
-import { Observable, ReplaySubject } from 'rxjs';
+import { catchError, map, Observable, ReplaySubject } from 'rxjs';
 
 
 @Injectable({

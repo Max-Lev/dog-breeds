@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, forwardRef, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Subject } from 'rxjs/internal/Subject';
@@ -49,7 +49,6 @@ export class CheckBoxComponent implements ControlValueAccessor, OnDestroy {
   setDisabledState?(isDisabled: boolean): void {
     
   }
-
 
   ngOnDestroy(): void {
     this.destroy$.next();
