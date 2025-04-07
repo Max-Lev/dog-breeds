@@ -97,7 +97,7 @@ export class SearchComponent implements OnInit, OnChanges, AfterViewInit {
       takeUntil(this.destroy$),
     ).subscribe({
       next: (response: IAlbum) => {
-        console.log('response ', response);
+        console.log('API RESPONSE ', response);
         this.albumsResponseSignal$.set(response);
       }
     })

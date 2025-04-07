@@ -17,7 +17,6 @@ export const ageRangeValidatorFactory = (baseRange: AgeRange, newRange: AgeRange
         if (age < range.min || age > range.max) {
             return { ageOutOfRange: range };
         }
-
         return null;
     };
 }

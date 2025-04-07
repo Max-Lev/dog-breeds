@@ -1,5 +1,5 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, effect, OnDestroy, signal } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AfterViewInit, Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropDownControlComponent } from '../../shared/drop-down-control/drop-down-control.component';
 import { SizeControlComponent } from '../../shared/size-control/size-control.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,9 +8,11 @@ import { SizeErrorsComponent } from '../../shared/size-errors/size-errors.compon
 import { IOptions } from '../../core/models/breeds.model';
 import { CheckBoxComponent } from '../../shared/check-box/check-box.component';
 import { Subject } from 'rxjs/internal/Subject';
-import { takeUntil } from 'rxjs';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ageRangeValidatorFactory } from './ageRange.validator';
 import { MatButtonModule } from '@angular/material/button';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 const OPTIONS = [
   { id: 1, name: 'White' }, { id: 2, name: 'Black' },
   { id: 3, name: 'Brown' }, { id: 4, name: 'Golden' },
@@ -27,11 +29,13 @@ const OPTIONS = [
     MatInputModule,
     SizeErrorsComponent,
     CheckBoxComponent,
-    MatButtonModule
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    CommonModule,
+    MatSnackBarModule,
   ],
   templateUrl: './adoption.component.html',
-  styleUrl: './adoption.component.scss',
-  // changeDetection:ChangeDetectionStrategy.OnPush
+  styleUrl: './adoption.component.scss'
 })
 export class AdoptionComponent implements AfterViewInit, OnDestroy {
 
@@ -47,7 +51,9 @@ export class AdoptionComponent implements AfterViewInit, OnDestroy {
 
   colorOptions: IOptions[] = OPTIONS;
 
-  formSubmitted = false;
+  snackBar = inject(MatSnackBar);
+
+  isLoading = false;
 
   adoptionForm = new FormGroup({
     weight: new FormControl<number | null>(null, {
@@ -73,10 +79,7 @@ export class AdoptionComponent implements AfterViewInit, OnDestroy {
           Validators.required
         ], updateOn: 'change'
     })
-  }, {
-    validators: ageRangeValidatorFactory(this.AGE_RANGE, this.NEW_AGE_RANGE),
-    // updateOn:'blur'
-  });
+  }, { validators: ageRangeValidatorFactory(this.AGE_RANGE, this.NEW_AGE_RANGE) });
 
   constructor() {
 
@@ -84,36 +87,40 @@ export class AdoptionComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
 
-    this.adoptionForm.controls.isFirst.valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe((value: boolean | null) => {
-        this.ageSignal$.set(value);
-      });
+    // this.adoptionForm.controls.isFirst.valueChanges.pipe(takeUntil(this.destroy$))
+    //   .subscribe((value: boolean | null) => {
+    //     this.ageSignal$.set(value);
+    //   });
 
-    this.adoptionForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
-      // if (this.adoptionForm.controls.weight.dirty) {
-      //   this.adoptionForm.controls.weight.addValidators(Validators.required);
-      //   this.adoptionForm.controls.weight.updateValueAndValidity({ emitEvent: false });
-      // }
+    // this.adoptionForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+    //   // if (this.adoptionForm.controls.weight.dirty) {
+    //   //   this.adoptionForm.controls.weight.addValidators(Validators.required);
+    //   //   this.adoptionForm.controls.weight.updateValueAndValidity({ emitEvent: false });
+    //   // }
 
-    });
+    // });
 
   }
 
   onSubmit() {
-    // Object.keys(this.adoptionForm.controls).forEach((key:AbstractControl<any>) => {
-    //   // this.adoptionForm.controls[key]
-    //   // key.to
-    // })
-    // this.formSubmitted = true;
     Object.keys(this.adoptionForm.controls).forEach(key => {
       this.adoptionForm.get(key)?.markAsTouched();
       this.adoptionForm.get(key)?.updateValueAndValidity({ onlySelf: true });
     });
-    if (this.adoptionForm.valid) {
-      console.log('valid ', this.adoptionForm);
-    } else {
-      console.log('!valid ', this.adoptionForm);
-    }
+    this.showLoader();
+  }
+
+  showLoader(){
+    this.isLoading = true;
+
+    setTimeout(() => {
+      this.isLoading = false;
+  
+      this.snackBar.open('Your adoption request has been registered in the system','Close',{ duration: 3000 });
+  
+      this.adoptionForm.reset(); 
+
+    }, 2000);
   }
 
   ngOnDestroy(): void {
