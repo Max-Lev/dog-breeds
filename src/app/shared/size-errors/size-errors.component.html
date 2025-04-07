@@ -4,7 +4,7 @@
 <mat-error *ngIf="control?.hasError('max')">Maximum is {{RANGE_CONFIG.max}}</mat-error>
 }
 
-  <!-- REQUIRED: PARENT FORM FOR CROSS FIELD VALIDATION -->
+<!-- REQUIRED: PARENT FORM FOR CROSS FIELD VALIDATION -->
 <mat-error *ngIf="parentForm?.errors?.['ageOutOfRange']">
   Age must be between {{ parentForm?.errors?.['ageOutOfRange'].min }} and
   {{ parentForm?.errors?.['ageOutOfRange'].max }}

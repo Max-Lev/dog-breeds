@@ -6,7 +6,8 @@
         </div>
 
         <div class="controlContainer">
-            <app-size-control [cntrlTitle]="'Range'" formControlName="rangeCntrl"></app-size-control>
+            <app-size-control
+             [cntrlTitle]="'Range'" formControlName="rangeCntrl"></app-size-control>
             <app-size-errors [control]="searchForm.get('rangeCntrl')" [RANGE_CONFIG]="RANGE_CONFIG"></app-size-errors>
         </div>
 

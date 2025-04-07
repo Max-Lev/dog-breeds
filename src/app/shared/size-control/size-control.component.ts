@@ -1,11 +1,11 @@
-import {Component, Input, OnDestroy } from '@angular/core';
+import { Component, DestroyRef, inject, Input } from '@angular/core';
 import SIZE_CONTROL_PROVIDERS from './config';
 import { AbstractControl, ControlValueAccessor, FormControl, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
-import { Subject } from 'rxjs/internal/Subject';
-import { takeUntil } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
+import { SizeErrorsComponent } from '../size-errors/size-errors.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-size-control',
@@ -14,13 +14,14 @@ import { CommonModule } from '@angular/common';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
-    CommonModule
+    CommonModule,
+    SizeErrorsComponent
   ],
   providers: [...SIZE_CONTROL_PROVIDERS],
   templateUrl: './size-control.component.html',
   styleUrl: './size-control.component.scss'
 })
-export class SizeControlComponent implements  ControlValueAccessor, Validator, OnDestroy {
+export class SizeControlComponent implements ControlValueAccessor, Validator {
 
   @Input() cntrlTitle: string = '';
 
@@ -30,14 +31,14 @@ export class SizeControlComponent implements  ControlValueAccessor, Validator, O
 
   onTouched: any = () => { };
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
-  writeValue(obj: any): void { 
-    this.rangeCntrl.setValue(obj); 
+  writeValue(obj: any): void {
+    this.rangeCntrl.setValue(obj);
   }
 
   registerOnChange(fn: any): void {
-    this.rangeCntrl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
+    this.rangeCntrl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
       this.onChange(value);
       fn(value);
     });
@@ -55,11 +56,6 @@ export class SizeControlComponent implements  ControlValueAccessor, Validator, O
   }
   registerOnValidatorChange?(fn: () => void): void {
     fn();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
 }

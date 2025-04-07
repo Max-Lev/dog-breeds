@@ -1,12 +1,12 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnDestroy } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ControlValueAccessor, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import DROPDOWN_CONTROL_PROVIDERS from './config';
 import { IOptions } from '../../core/models/breeds.model';
 import { CommonModule } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-drop-down',
@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './drop-down-control.component.html',
   styleUrl: './drop-down-control.component.scss'
 })
-export class DropDownControlComponent implements ControlValueAccessor, OnDestroy {
+export class DropDownControlComponent implements ControlValueAccessor {
 
   dropDownControl = new FormControl('');
 
@@ -29,18 +29,18 @@ export class DropDownControlComponent implements ControlValueAccessor, OnDestroy
 
   onTouched: any = () => { };
 
-  private destroy$ = new Subject<void>();
-
   @Input() options: IOptions[] = [];
 
   @Input({ required: true }) cntrlTitle!: string;
+
+  private destroyRef = inject(DestroyRef);
 
   writeValue(value: any): void {
     this.dropDownControl.setValue(value);
   }
 
   registerOnChange(fn: any): void {
-    this.dropDownControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
+    this.dropDownControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
       this.onChange(value);
       fn(value);
     });
@@ -53,12 +53,5 @@ export class DropDownControlComponent implements ControlValueAccessor, OnDestroy
   setDisabledState(isDisabled: boolean): void {
     isDisabled ? this.dropDownControl.disable() : this.dropDownControl.enable();
   }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-
 
 }

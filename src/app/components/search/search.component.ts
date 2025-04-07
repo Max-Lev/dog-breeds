@@ -78,7 +78,7 @@ export class SearchComponent implements OnInit {
 
   private formAction$() {
     this.searchForm.valueChanges.pipe(
-      debounceTime(1500),
+      debounceTime(1000),
       filter(() => this.isValid()),
       distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       tap((value) => this.setRangeSignalValue(value)),

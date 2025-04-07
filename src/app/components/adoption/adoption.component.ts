@@ -27,7 +27,6 @@ export class AdoptionComponent {
 
   adoptionForm = AdoptionFormInit(this.WEIGHT_RANGE, this.AGE_RANGE, this.NEW_AGE_RANGE);
 
-
   onSubmit() {
     Object.keys(this.adoptionForm.controls).forEach(key => {
       this.adoptionForm.get(key)?.markAsTouched();

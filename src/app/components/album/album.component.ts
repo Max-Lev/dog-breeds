@@ -9,6 +9,6 @@ import { CommonModule } from '@angular/common';
 })
 export class AlbumComponent {
 
-  @Input() albums:string[] = [];
+  @Input() albums: string[] = [];
 
 }

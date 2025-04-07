@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, inject, OnDestroy, OnInit } from '@angular/core';
-import {MatTabsModule } from '@angular/material/tabs';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { TABS_CONFIG } from './config';
-import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-tabs-container',
@@ -16,29 +16,26 @@ import { CommonModule } from '@angular/common';
   templateUrl: './tabs-container.component.html',
   styleUrl: './tabs-container.component.scss'
 })
-export class TabsContainerComponent implements OnInit,OnDestroy,AfterViewInit {
-  
+export class TabsContainerComponent implements OnInit {
+
   links = TABS_CONFIG.links;
 
   activeLink = TABS_CONFIG.activeLink
 
   background = TABS_CONFIG.background;
-  
-  destroy$ = new Subject<void>();
 
   activatedRoute = inject(ActivatedRoute);
 
   router = inject(Router);
-  
+
+  private destroyRef = inject(DestroyRef);
+
   ngOnInit(): void {
     this.setActiveTab();
   }
-  ngAfterViewInit(): void {
-   
-  }
 
   setActiveTab() {
-    this.router.events.pipe(takeUntil(this.destroy$)).subscribe(event => {
+    this.router.events.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(event => {
       if (event instanceof NavigationEnd) {
         const currentRoute = this.activatedRoute.root;
         let child = currentRoute.firstChild;
@@ -50,9 +47,6 @@ export class TabsContainerComponent implements OnInit,OnDestroy,AfterViewInit {
     });
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+
 
 }

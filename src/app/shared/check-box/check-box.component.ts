@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { Subject } from 'rxjs/internal/Subject';
-import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-check-box',
   standalone: true,
@@ -22,15 +21,15 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './check-box.component.html',
   styleUrl: './check-box.component.scss'
 })
-export class CheckBoxComponent implements ControlValueAccessor, OnDestroy {
+export class CheckBoxComponent implements ControlValueAccessor {
 
   onChange: any = () => { };
 
   onTouched: any = () => { };
 
-  private destroy$ = new Subject<void>();
-
   checkBoxControl = new FormControl(false);
+
+  private destroyRef = inject(DestroyRef);
 
   writeValue(obj: boolean): void {
     this.checkBoxControl.setValue(obj);
@@ -41,7 +40,7 @@ export class CheckBoxComponent implements ControlValueAccessor, OnDestroy {
   }
 
   registerOnTouched(fn: any): void {
-    this.checkBoxControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value: boolean | null) => {
+    this.checkBoxControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value: boolean | null) => {
       this.onChange(value);
       this.onTouched();
     });
@@ -50,9 +49,5 @@ export class CheckBoxComponent implements ControlValueAccessor, OnDestroy {
     
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
 }

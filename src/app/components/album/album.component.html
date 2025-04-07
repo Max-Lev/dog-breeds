@@ -1,7 +1,7 @@
 <ng-container>
     @for (item of albums; track $index) {
     <div class="card" [ngStyle]="{ 'background-image': 'url(' + item + ')'}">
-        <h4>{{$index+1}}</h4>
+        <h4>({{$index + 1 | number}})</h4>
     </div>
     }
 </ng-container>

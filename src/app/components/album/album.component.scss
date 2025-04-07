@@ -2,19 +2,32 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-
+    gap: 1rem; 
     .card {
-        max-width: 400px;
-        width: 20%;
-        height: auto;
-        border-radius: 5px;
-        min-height: 250px;
-        border: 1px solid;
-        padding: 1rem;
-        margin: 1rem;
-        box-sizing: border-box;
-        background: center;
-        background-size: contain;
-        background-repeat: no-repeat;
+      flex: 1 1 300px; 
+      max-width: 400px;
+      min-height: 250px;
+      border-radius: 5px;
+      padding: 1rem;
+      box-sizing: border-box;
+      background: center / contain no-repeat;
+      border: 1px solid #ccc; 
+      background-color: #fff;
+      h4{
+        color: #ff4081;
+      }
     }
-}
+  }
+  
+  @media (max-width: 768px) {
+    .card {
+      flex-basis: 45%; 
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .card {
+      flex-basis: 90%; 
+    }
+  }
+  
