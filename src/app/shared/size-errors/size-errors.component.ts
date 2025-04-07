@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -7,8 +7,8 @@ import { MatInputModule } from '@angular/material/input';
   selector: 'app-size-errors',
   standalone: true,
   imports: [
-    MatInputModule,
-    CommonModule
+    NgIf,
+    MatInputModule
   ],
   templateUrl: './size-errors.component.html',
   styleUrl: './size-errors.component.scss'

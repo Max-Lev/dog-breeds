@@ -3,7 +3,6 @@ import SIZE_CONTROL_PROVIDERS from './config';
 import { AbstractControl, ControlValueAccessor, FormControl, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { CommonModule } from '@angular/common';
 import { SizeErrorsComponent } from '../size-errors/size-errors.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -14,7 +13,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
-    CommonModule,
     SizeErrorsComponent
   ],
   providers: [...SIZE_CONTROL_PROVIDERS],

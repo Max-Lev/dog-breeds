@@ -1,11 +1,11 @@
-import { Component, DestroyRef, inject, Input, OnDestroy } from '@angular/core';
+import { Component, DestroyRef, inject, Input } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ControlValueAccessor, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
 import DROPDOWN_CONTROL_PROVIDERS from './config';
 import { IOptions } from '../../core/models/breeds.model';
-import { CommonModule } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatSelectModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    CommonModule
+    TitleCasePipe
   ],
   providers: [...DROPDOWN_CONTROL_PROVIDERS],
   templateUrl: './drop-down-control.component.html',

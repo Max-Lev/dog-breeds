@@ -1,16 +1,21 @@
 <!-- FOR COMPONENT VALIDATION  -->
 @if (!parentForm) {
-<mat-error *ngIf="control?.hasError('min')">Minimum is {{RANGE_CONFIG.min}}</mat-error>
-<mat-error *ngIf="control?.hasError('max')">Maximum is {{RANGE_CONFIG.max}}</mat-error>
+@if (control?.hasError('min')) {
+<mat-error>Minimum is {{RANGE_CONFIG.min}}</mat-error>
+}
+@if (control?.hasError('max')) {
+<mat-error>Maximum is {{RANGE_CONFIG.max}}</mat-error>
+}
 }
 
 <!-- REQUIRED: PARENT FORM FOR CROSS FIELD VALIDATION -->
-<mat-error *ngIf="parentForm?.errors?.['ageOutOfRange']">
+@if (parentForm?.errors?.['ageOutOfRange']) {
+<mat-error>
   Age must be between {{ parentForm?.errors?.['ageOutOfRange'].min }} and
   {{ parentForm?.errors?.['ageOutOfRange'].max }}
 </mat-error>
+}
 
-
-<mat-error *ngIf="(control?.hasError('required') && (control?.touched))">
-  Field is required
-</mat-error>
+@if ((control?.hasError('required') && (control?.touched))) {
+<mat-error>Field is required</mat-error>
+}

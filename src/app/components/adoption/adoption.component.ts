@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AdoptionFormInit } from './adoption.form';
 import { ADOPTION_IMPORTS_CONFIG, AGE_RANGE, COLOR_OPTIONS, NEW_AGE_RANGE, WEIGHT_RANGE } from './config';
 import { Component, inject } from '@angular/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-adoption',

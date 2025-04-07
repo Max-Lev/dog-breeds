@@ -4,7 +4,6 @@ import { debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs
 import { DropDownControlComponent } from '../../shared/drop-down-control/drop-down-control.component';
 import { SizeControlComponent } from '../../shared/size-control/size-control.component';
 import { IAlbum, IOptions, IRange } from '../../core/models/breeds.model';
-import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BreedsService } from '../../core/providers/breeds.service';
@@ -23,7 +22,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    CommonModule,
     AlbumComponent,
     SizeErrorsComponent
   ],
@@ -68,7 +66,7 @@ export class SearchComponent implements OnInit {
     const response = this.albumsResponseSignal$().images;
     const limit = this.rangeValueSignal$();
     const albumsSize = response.slice(0, limit as number) ?? [];
-    console.log('ALBUM SIZE ', albumsSize);
+    console.info('ALBUMS ', albumsSize);
     return albumsSize;
   });
 
@@ -86,7 +84,7 @@ export class SearchComponent implements OnInit {
       takeUntilDestroyed(this.destroyRef),
     ).subscribe({
       next: (response: IAlbum) => {
-        console.log('API RESPONSE ', response);
+        console.info('API RESPONSE ', response);
         this.albumsResponseSignal$.set(response);
       }
     })

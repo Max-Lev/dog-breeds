@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
@@ -8,8 +7,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   standalone: true,
   imports: [
     MatCheckboxModule,
-    ReactiveFormsModule,
-    CommonModule
+    ReactiveFormsModule
   ],
   providers: [
     {
@@ -18,7 +16,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
       multi: true
     }
   ],
-  templateUrl: './check-box.component.html',
+  template: `<mat-checkbox [formControl]="checkBoxControl" class="checkBox">
+  Is this your first adoption?
+  </mat-checkbox>`,
   styleUrl: './check-box.component.scss'
 })
 export class CheckBoxComponent implements ControlValueAccessor {
@@ -46,7 +46,7 @@ export class CheckBoxComponent implements ControlValueAccessor {
     });
   }
   setDisabledState?(isDisabled: boolean): void {
-    
+
   }
 
 

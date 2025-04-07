@@ -2,7 +2,7 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { TABS_CONFIG } from './config';
-import { CommonModule } from '@angular/common';
+import { LowerCasePipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -11,7 +11,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   imports: [
     RouterModule,
     MatTabsModule,
-    CommonModule
+    LowerCasePipe
   ],
   templateUrl: './tabs-container.component.html',
   styleUrl: './tabs-container.component.scss'
