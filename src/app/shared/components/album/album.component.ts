@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgFor, NgStyle } from '@angular/common';
 @Component({
   selector: 'app-album',
   standalone: true,
-  imports: [CommonModule],
+  imports: [NgFor, NgStyle],
   templateUrl: './album.component.html',
   styleUrl: './album.component.scss'
 })

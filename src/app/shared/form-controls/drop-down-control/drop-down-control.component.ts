@@ -1,22 +1,13 @@
 import { Component, DestroyRef, inject, Input } from '@angular/core';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { ControlValueAccessor, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Subject } from 'rxjs';
-import DROPDOWN_CONTROL_PROVIDERS from './config';
+import { ControlValueAccessor, FormControl } from '@angular/forms';
+import { DROPDOWN_CONTROL_IMPORTS, DROPDOWN_CONTROL_PROVIDERS } from './config';
 import { IOptions } from '../../../core/models/breeds.model';
-import { TitleCasePipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-drop-down',
   standalone: true,
-  imports: [
-    MatSelectModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    TitleCasePipe
-  ],
+  imports: [...DROPDOWN_CONTROL_IMPORTS],
   providers: [...DROPDOWN_CONTROL_PROVIDERS],
   templateUrl: './drop-down-control.component.html'
 })
@@ -35,7 +26,6 @@ export class DropDownControlComponent implements ControlValueAccessor {
   private destroyRef = inject(DestroyRef);
 
   writeValue = (value: any): void => this.dropDownControl.setValue(value);
-
 
   registerOnChange(fn: any): void {
     this.dropDownControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
