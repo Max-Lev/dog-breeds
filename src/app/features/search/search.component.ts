@@ -1,17 +1,17 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, DestroyRef, inject, Input, OnInit, Signal, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
-import { DropDownControlComponent } from '../../shared/drop-down-control/drop-down-control.component';
-import { SizeControlComponent } from '../../shared/size-control/size-control.component';
+import { DropDownControlComponent } from '../../shared/form-controls/drop-down-control/drop-down-control.component';
 import { IAlbum, IOptions, IRange } from '../../core/models/breeds.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BreedsService } from '../../core/providers/breeds.service';
 import { Observable } from 'rxjs';
-import { AlbumComponent } from '../album/album.component';
-import { SizeErrorsComponent } from '../../shared/size-errors/size-errors.component';
+import { AlbumComponent } from '../../shared/components/album/album.component';
 import { crossFieldRequiredValidator } from './custom.validator';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { SizeControlComponent } from '../../shared/form-controls/size-control/size-control.component';
+import { SizeErrorsComponent } from '../../shared/form-controls/size-errors/size-errors.component';
 
 @Component({
   selector: 'app-search',

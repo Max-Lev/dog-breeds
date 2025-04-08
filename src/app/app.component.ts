@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TabsContainerComponent } from './components/tabs-container/tabs-container.component';
+import { TabsContainerComponent } from './shared/components/tabs-container/tabs-container.component';
 @Component({
   selector: 'app-root',
   standalone: true,

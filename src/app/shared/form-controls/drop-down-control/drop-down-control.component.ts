@@ -4,7 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ControlValueAccessor, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
 import DROPDOWN_CONTROL_PROVIDERS from './config';
-import { IOptions } from '../../core/models/breeds.model';
+import { IOptions } from '../../../core/models/breeds.model';
 import { TitleCasePipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
