@@ -1,7 +1,7 @@
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { ageRangeValidatorFactory } from "./ageRange.validator";
 import { IRange } from "../../core/models/breeds.model";
-import { markRequiredFieldsTouchedValidator } from "./markRequiredFields.validator";
+import { markRequiredFieldsTouchedValidator } from "../../shared/validators/markRequiredFields.validator";
 
 export const AdoptionFormInit = (WEIGHT_RANGE: IRange, AGE_RANGE: IRange, NEW_AGE_RANGE: IRange) => {
 

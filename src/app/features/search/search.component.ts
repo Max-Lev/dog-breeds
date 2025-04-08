@@ -1,30 +1,16 @@
 import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, Input, OnInit, Signal, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
-import { DropDownControlComponent } from '../../shared/form-controls/drop-down-control/drop-down-control.component';
 import { IAlbum, IOptions, IRange } from '../../core/models/breeds.model';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { BreedsService } from '../../core/providers/breeds.service';
 import { Observable } from 'rxjs';
-import { AlbumComponent } from '../../shared/components/album/album.component';
-import { crossFieldRequiredValidator } from './custom.validator';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { SizeControlComponent } from '../../shared/form-controls/size-control/size-control.component';
-import { SizeErrorsComponent } from '../../shared/form-controls/size-errors/size-errors.component';
+import { SearchFormInit } from './search.form';
+import { SEARCH_IMPORTS_CONFIG } from './config';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [
-    DropDownControlComponent,
-    SizeControlComponent,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    AlbumComponent,
-    SizeErrorsComponent
-  ],
+  imports: [...SEARCH_IMPORTS_CONFIG],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -35,19 +21,8 @@ export class SearchComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  searchForm = new FormGroup({
-    breedName: new FormControl<string>('', { nonNullable: true }),
-    rangeCntrl: new FormControl(null,
-      {
-        validators: [
-          Validators.min(this.RANGE_CONFIG.min),
-          Validators.max(this.RANGE_CONFIG.max),
-          Validators.required
-        ],
-        updateOn: 'change'
-      })
-  });
-  
+  searchForm = SearchFormInit(this.RANGE_CONFIG);
+
   private isValid = (): boolean => {
     const { breedName, rangeCntrl } = this.searchForm.getRawValue();
     return this.searchForm.valid && !!breedName && rangeCntrl != null;
@@ -94,8 +69,6 @@ export class SearchComponent implements OnInit {
 
 
   private getByBreed$ = (breed: string): Observable<IAlbum> => this.breedsService.getByBreed(breed);
-
-
 
 
 }
