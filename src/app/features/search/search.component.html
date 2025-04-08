@@ -1,11 +1,11 @@
 <section class="container">
     <form [formGroup]="searchForm" class="formContainer">
 
-        <div class="controlContainer">
+        <div class="controlContainer control-container">
             <app-drop-down [cntrlTitle]="'Breed'" [options]="breeds" formControlName="breedName"></app-drop-down>
         </div>
-
-        <div class="controlContainer">
+        
+        <div class="controlContainer control-container">
             <app-size-control [cntrlTitle]="'Album Size'" formControlName="rangeCntrl"></app-size-control>
             <app-size-errors [control]="searchForm.get('rangeCntrl')" [RANGE_CONFIG]="RANGE_CONFIG"></app-size-errors>
         </div>

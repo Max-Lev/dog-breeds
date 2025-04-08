@@ -2,20 +2,20 @@
 
     <form [formGroup]="adoptionForm">
 
-        <section>
+        <section class="control-container">
             <app-size-control [cntrlTitle]="'Weight/Kg'" formControlName="weight"></app-size-control>
             <app-size-errors [control]="adoptionForm.get('weight')" [RANGE_CONFIG]="WEIGHT_RANGE"></app-size-errors>
         </section>
 
-        <section>
+        <section class="control-container">
             <app-drop-down [cntrlTitle]="'Color'" [options]="colorOptions" formControlName="color"></app-drop-down>
             <app-size-errors [control]="adoptionForm.get('color')"></app-size-errors>
         </section>
 
-        <section>
+        <section class="control-container">
             <app-check-box formControlName="isFirst"></app-check-box>
         </section>
-        <section>
+        <section class="control-container">
             <app-size-control [cntrlTitle]="'Age'" formControlName="age"></app-size-control>
             <app-size-errors [control]="adoptionForm.get('age')" [parentForm]="adoptionForm"></app-size-errors>
         </section>

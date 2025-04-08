@@ -1,8 +1,12 @@
 // /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { 
-    margin: 0; 
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
     background-color: rgb(40, 40, 40);
     font-family: Roboto, "Helvetica, Arial", sans-serif;
     font-weight: 400;
@@ -13,8 +17,30 @@ body {
 }
 
 
-mat-form-field{
-    .mat-mdc-text-field-wrapper{
+mat-form-field {
+    padding: 0;
+    margin: 0;
+
+    .mat-mdc-text-field-wrapper {
         border-radius: 5px;
+    }
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+.control-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+    position: relative;
+    app-size-errors {
+        display: block;
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        bottom: 0px;
     }
 }
