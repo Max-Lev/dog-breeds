@@ -1,15 +1,12 @@
-import { NgIf } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
-import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { CheckBoxComponent } from "../../shared/form-controls/check-box/check-box.component";
 import { DropDownControlComponent } from "../../shared/form-controls/drop-down-control/drop-down-control.component";
 import { IRange } from "../../core/models/breeds.model";
 import { SizeControlComponent } from "../../shared/form-controls/size-control/size-control.component";
 import { SizeErrorsComponent } from "../../shared/form-controls/size-errors/size-errors.component";
+import { SubmitBtnComponent } from "../../shared/form-controls/submit-btn/submit-btn.component";
 
 export const ADOPTION_IMPORTS_CONFIG = [
     ReactiveFormsModule,
@@ -19,10 +16,7 @@ export const ADOPTION_IMPORTS_CONFIG = [
     MatInputModule,
     SizeErrorsComponent,
     CheckBoxComponent,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    NgIf,
-    MatSnackBarModule,
+    SubmitBtnComponent
 ];
 
 export const COLOR_OPTIONS = [
@@ -32,6 +26,8 @@ export const COLOR_OPTIONS = [
 ];
 
 export const WEIGHT_RANGE: IRange = { min: 1, max: 100 };
+
 export const AGE_RANGE: IRange = { min: 0, max: 20 };
+
 export const NEW_AGE_RANGE: IRange = { min: 0, max: 8 };
 

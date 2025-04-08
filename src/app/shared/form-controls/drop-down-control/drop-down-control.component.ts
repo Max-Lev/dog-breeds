@@ -18,8 +18,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     TitleCasePipe
   ],
   providers: [...DROPDOWN_CONTROL_PROVIDERS],
-  templateUrl: './drop-down-control.component.html',
-  styleUrl: './drop-down-control.component.scss'
+  templateUrl: './drop-down-control.component.html'
 })
 export class DropDownControlComponent implements ControlValueAccessor {
 
@@ -35,9 +34,8 @@ export class DropDownControlComponent implements ControlValueAccessor {
 
   private destroyRef = inject(DestroyRef);
 
-  writeValue(value: any): void {
-    this.dropDownControl.setValue(value);
-  }
+  writeValue = (value: any): void => this.dropDownControl.setValue(value);
+
 
   registerOnChange(fn: any): void {
     this.dropDownControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
@@ -46,9 +44,7 @@ export class DropDownControlComponent implements ControlValueAccessor {
     });
   }
 
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
+  registerOnTouched = (fn: any): void => this.onTouched = fn;
 
   setDisabledState(isDisabled: boolean): void {
     isDisabled ? this.dropDownControl.disable() : this.dropDownControl.enable();

@@ -1,0 +1,4 @@
+<button (click)="submitAction()" type="submit" mat-flat-button color="primary" [disabled]="disabled">
+    <mat-spinner color="accent" *ngIf="isLoading" diameter="25"></mat-spinner>
+    <span *ngIf="!isLoading">Submit</span>
+</button>

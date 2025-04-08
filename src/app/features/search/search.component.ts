@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, DestroyRef, inject, Input, OnInit, Signal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, Input, OnInit, Signal, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 import { DropDownControlComponent } from '../../shared/form-controls/drop-down-control/drop-down-control.component';
@@ -47,7 +47,6 @@ export class SearchComponent implements OnInit {
         updateOn: 'change'
       })
   });
-
   
   private isValid = (): boolean => {
     const { breedName, rangeCntrl } = this.searchForm.getRawValue();
@@ -87,18 +86,16 @@ export class SearchComponent implements OnInit {
         console.info('API RESPONSE ', response);
         this.albumsResponseSignal$.set(response);
       }
-    })
+    });
   }
 
-
-  private setRangeSignalValue(value: Partial<{ breedName: string, rangeCntrl: null }>) {
+  private setRangeSignalValue = (value: Partial<{ breedName: string, rangeCntrl: null }>) =>
     this.rangeValueSignal$.set(value.rangeCntrl ?? 0);
-  }
 
-  private getByBreed$(breed: string): Observable<IAlbum> {
-    return this.breedsService.getByBreed(breed);
-  }
 
-  
-  
+  private getByBreed$ = (breed: string): Observable<IAlbum> => this.breedsService.getByBreed(breed);
+
+
+
+
 }

@@ -27,26 +27,20 @@ export class AdoptionComponent {
 
   adoptionForm = AdoptionFormInit(this.WEIGHT_RANGE, this.AGE_RANGE, this.NEW_AGE_RANGE);
 
-  onSubmit() {
-    Object.keys(this.adoptionForm.controls).forEach(key => {
-      this.adoptionForm.get(key)?.markAsTouched();
-      this.adoptionForm.get(key)?.updateValueAndValidity({ onlySelf: true });
-    });
-    this.showProgressSpinner();
-  }
+  msg = 'Your adoption request has been registered in the system';
+
+  onSubmit = () => this.showProgressSpinner();
 
   showProgressSpinner() {
+
     this.isLoading = true;
 
     setTimeout(() => {
       this.isLoading = false;
-
-      this.snackBar.open('Your adoption request has been registered in the system', 'Close', { duration: 3000 });
-
+      this.snackBar.open(this.msg, 'Close', { duration: 3000 });
       this.adoptionForm.reset();
-
     }, 2000);
-  }
 
+  }
 
 }

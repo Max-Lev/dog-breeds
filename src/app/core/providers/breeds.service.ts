@@ -11,7 +11,9 @@ import { catchError, map, Observable, ReplaySubject } from 'rxjs';
 export class BreedsService {
 
   private http = inject(HttpClient);
-
+  /**
+   * prevent duplicate breeds http request
+   */
   private breedsCache = new ReplaySubject<IOptions[]>(1);
 
   isLoaded: boolean = false;

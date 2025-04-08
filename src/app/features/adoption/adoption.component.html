@@ -1,6 +1,6 @@
 <div class="container">
 
-    <form [formGroup]="adoptionForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="adoptionForm">
 
         <section>
             <app-size-control [cntrlTitle]="'Weight/Kg'" formControlName="weight"></app-size-control>
@@ -18,14 +18,11 @@
         <section>
             <app-size-control [cntrlTitle]="'Age'" formControlName="age"></app-size-control>
             <app-size-errors [control]="adoptionForm.get('age')" [parentForm]="adoptionForm"></app-size-errors>
-            <!-- [RANGE_CONFIG]="ageRangeSignal$()" -->
         </section>
 
         <section>
-            <button type="submit" mat-flat-button color="primary" [disabled]="adoptionForm.invalid || isLoading">
-                <mat-spinner color="accent" *ngIf="isLoading" diameter="25"></mat-spinner>
-                <span *ngIf="!isLoading">Submit</span>
-            </button>
+            <app-submit-btn [isLoading]="isLoading" (submitEmitter)="onSubmit()"
+                [disabled]="adoptionForm.invalid || isLoading"></app-submit-btn>
         </section>
 
     </form>

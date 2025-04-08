@@ -31,23 +31,17 @@ export class CheckBoxComponent implements ControlValueAccessor {
 
   private destroyRef = inject(DestroyRef);
 
-  writeValue(obj: boolean): void {
-    this.checkBoxControl.setValue(obj);
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
+  writeValue = (obj: boolean): void  => this.checkBoxControl.setValue(obj);
+  
+  registerOnChange = (fn: any): void => this.onChange = fn;
+  
   registerOnTouched(fn: any): void {
     this.checkBoxControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value: boolean | null) => {
       this.onChange(value);
       this.onTouched();
     });
   }
-  setDisabledState?(isDisabled: boolean): void {
-
-  }
+  setDisabledState?(isDisabled: boolean): void {}
 
 
 }

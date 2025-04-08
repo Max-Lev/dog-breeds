@@ -16,8 +16,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     SizeErrorsComponent
   ],
   providers: [...SIZE_CONTROL_PROVIDERS],
-  templateUrl: './size-control.component.html',
-  styleUrl: './size-control.component.scss'
+  templateUrl: './size-control.component.html'
 })
 export class SizeControlComponent implements ControlValueAccessor, Validator {
 
