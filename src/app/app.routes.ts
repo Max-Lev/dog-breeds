@@ -3,6 +3,9 @@ import { GetBreedsResolver } from './core/resolvers/get-breeds.resolver';
 
 export const routes: Routes = [
     {
+        path: '', redirectTo: 'search', pathMatch: 'full'
+    },
+    {
         path: 'search',
         loadComponent: () => import('./features/search/search.component').then(m => m.SearchComponent),
         resolve: { breeds: GetBreedsResolver },
@@ -14,6 +17,6 @@ export const routes: Routes = [
         data: { reuseComponent: true }
     },
     {
-        path: '', redirectTo: 'search', pathMatch: 'full'
+        path: '**', redirectTo: 'search', pathMatch: 'full'
     }
 ];
